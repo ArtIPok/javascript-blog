@@ -97,10 +97,24 @@
 
   generateTitleLinks();
 
+  function calculateTagsParams(tags){
+    const params = {max: 0, min: 999999};
+    for(let tag in tags){
+      console.log(tag + ' is used ' + tags[tag] + ' times ');
+      if(tags[tag] > params.max){
+        params.max = tags[tag];
+      }
+      if(tags[tag] < params.min){
+        params.min = tags[tag];
+      }
+    }
+    return params;
+  }
+
   function generateTags(){
 
-    /* create a new variable allTags with an empty array */
-    let allTags = [];
+    /* create a new variable allTags with an empty object */
+    let allTags = {};
 
     /* find all articles */
     const articles = document.querySelectorAll(optArticleSelector);
@@ -133,13 +147,21 @@
         console.log(linkHTML);
 
         /* add generated code to the html variable */
+        // html = html + linkHTML;
         html = html + linkHTML;
         console.log(html);
 
         /* check if this link is NOT already in allTags */
-        if(allTags.indexOf(linkHTML) == -1){
-          allTags.push(linkHTML);
-        }
+        /* when don't have tag in the object allTags */
+        if(!allTags[tag]) { // ! - negation
+          allTags[tag] = 1;
+        } else {  // when tag is in the object */
+          allTags[tag]++;
+          }
+          console.log(allTags);
+          /* add generated code to array allTags */
+          // allTags.push(linkHTML);
+
 
       /* END LOOP: for each tag */
       }
@@ -154,7 +176,24 @@
     const tagListInRightColumn = document.querySelector('.tags');
 
     /* add html from allTags to tagListInRightColumn */
-    tagListInRightColumn.innerHTML = allTags.join(' ');
+    // tagListInRightColumn.innerHTML = allTags.join(' ');
+
+    // create variable for all links HTML code
+    const tagsParams = calculateTagsParams(allTags) ;
+    console.log('tagsParams: ',tagsParams);
+    let allTagsHTML = '';
+
+    // START LOOP: for ech tag in allTags:
+    for(let tag in allTags){
+      // generate code of a link and add it to allTagsHTML:
+      allTagsHTML += tag + ' (' + allTags[tag] + ') ';
+
+    // END LOOP for ech tag in allTags:
+    }
+
+    // add HTML from allTagsHTML to tagListInRightColumn:
+    tagListInRightColumn.innerHTML = allTagsHTML;
+
   }
 
   generateTags();
@@ -304,6 +343,6 @@
       console.log(targetAuthorLink);
     }
 
-  authorClickHandler('[data-author="' + author  + '"]');
+  // authorClickHandler('[data-author="' + author  + '"]');
   }
 }
