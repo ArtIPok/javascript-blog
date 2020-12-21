@@ -18,7 +18,7 @@
       activeLink.classList.remove('active');
       console.log(activeLinks);
     }
-    // [IN PROGRESS] add class 'active' to the clicked link
+    /* [IN PROGRESS] add class 'active' to the clicked link */
     clickedElement.classList.add('active');
     console.log('clickedElement: ', clickedElement);
 
@@ -201,7 +201,7 @@
 
       const tagSize = calculateTagClass(allTags[tag], tagsParams);
       console.log(tagSize);
-       
+
       const tagLinkHTML = '<li><a href="#tag-' + tag + '"' + ' ' + 'class="' + tagSize + '">' + tag + ' (' + allTags[tag] + ')'  + '</a></li>';
       console.log('tag link HTML: ', tagLinkHTML);
 
@@ -298,7 +298,7 @@
       console.log(articleAuthor);
 
       // generate HTML of the link
-      const linkHTML = '<a href="#' + articleAuthor + '">' + 'by ' + articleAuthor + '</a>';
+      const linkHTML = '<a href="#author-' + articleAuthor + '">' + 'by ' + articleAuthor + '</a>';
       console.log(linkHTML);
 
       // add generated code to the html variable
@@ -315,13 +315,13 @@
   function addClickListenersToAuthors(){
 
     // find all links to author
-    const linksToAuthors = document.querySelectorAll('[data-author="');
+    const linksToAuthors = document.querySelectorAll('a[href^="#author-');
     console.log(linksToAuthors);
 
     // START LOOP: for ech link
     for(let linkToAuthor of linksToAuthors){
       // add
-      linkToAuthor.addEventListener('click');
+      linkToAuthor.addEventListener('click', authorClickHandler);
     }
   }
 
@@ -341,10 +341,11 @@
     console.log(href);
 
     // make a new constant "author" and extract # from the "href" constant
-    const author = href.replace('#', '');
+    const author = href.replace('#author-', '');
+    console.log(author);
 
     // find all author links with class "active"
-    const authorLinksActive = document.querySelectorAll('active');
+    const authorLinksActive = document.querySelectorAll('a.active[href^="#author-"]');
 
     //START LOOP: for ech activ author links
     for(let authorLinkActive of authorLinksActive){
@@ -363,6 +364,7 @@
       console.log(targetAuthorLink);
     }
 
-  // authorClickHandler('[data-author="' + author  + '"]');
+  /* execute function "generateTitleLinks" with article selector as argument */
+  generateTitleLinks('[data-author~="' + author + '"]');
   }
 }
